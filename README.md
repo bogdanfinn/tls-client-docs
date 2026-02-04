@@ -32,6 +32,10 @@ type HttpClient interface {
     Get(url string) (resp *http.Response, err error)
     Head(url string) (resp *http.Response, err error)
     Post(url, contentType string, body io.Reader) (resp *http.Response, err error)
+
+    GetBandwidthTracker() bandwidth.BandwidthTracker
+    GetDialer() proxy.ContextDialer
+    GetTLSDialer() TLSDialerFunc
 }
 ```
 

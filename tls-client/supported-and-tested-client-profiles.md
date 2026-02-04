@@ -20,9 +20,12 @@ The internal client profiles were created and tested by myself. Of course that d
    * 117 (chrome\_117)
    * 120 (chrome\_120)
    * 124 (chrome\_124)
-   * 130 with PSK (chrome\_130\_PSK)
    * 133 (chrome\_133)
    * 133 with PSK (chrome\_133\_PSK)
+   * 144 (chrome\_144)
+   * 144 with PSK (chrome\_144\_PSK)
+   * 146 (chrome\_146)
+   * 146 with PSK (chrome\_146\_PSK)
 2. Safari
    * 15.6.1 (safari\_15\_6\_1)
    * 16.0 (safari\_16\_0)
@@ -33,6 +36,7 @@ The internal client profiles were created and tested by myself. Of course that d
    * 17.0 (safari\_ios\_17\_0)
    * 18.0 (safari\_ios\_18\_0)
    * 18.5 (safari\_ios\_18\_5)
+   * 26.0 (safari\_ios\_26\_0)
 4. iPadOS (Safari)
    * 15.6 (safari\_ipad\_15\_6)
 5. Firefox
@@ -43,7 +47,6 @@ The internal client profiles were created and tested by myself. Of course that d
    * 108 (firefox\_108)
    * 110 (firefox\_110)
    * 117 (firefox\_117)
-   * 132 (firefox\_132)
 6. Opera
    * 89 (opera\_89)
    * 90 (opera\_90)
@@ -63,6 +66,7 @@ The internal client profiles were created and tested by myself. Of course that d
 The contributed client profiles are contributed by people from the community. They are not precisely tested like the internal ones. Please be aware that they might have issues.
 
 1. Chrome
+   * 130 with PSK (chrome\_130\_PSK)
    * 131 (chrome\_131)
    * 131 with PSK (chrome\_131\_PSK)
 2. OkHttp4
@@ -80,12 +84,15 @@ The contributed client profiles are contributed by people from the community. Th
    * Mesh Android (mesh\_android or mesh\_android\_1)
    * Mesh Android 2 (mesh\_android\_2)
    * Confirmed Android (confirmed\_android)
-   * Confirmed Android 2 (confirmed\_android\_2)
 4. Firefox
    * 120 (firefox\_120)
    * 123 (firefox\_123)
    * 132 (firefox\_132)
    * 133 (firefox\_133)
+   * 135 (firefox\_135)
+   * 146 with PSK (firefox\_146\_PSK)
+   * 147 (firefox\_147)
+   * 147 with PSK (firefox\_147\_PSK)
 
 You can also provide your own client. See the examples how to do that.
 

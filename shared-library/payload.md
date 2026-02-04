@@ -13,6 +13,7 @@ This page shows once the full possible request payload against the shared librar
   "followRedirects": false,
   "forceHttp1": false,
   "disableHttp3": false,
+  "withProtocolRacing": false,
   "headerOrder": null,
   "headers": null,
   "insecureSkipVerify": false,
@@ -31,7 +32,7 @@ This page shows once the full possible request payload against the shared librar
   "disableIPV4": false,
   "localAddress": null,
   "sessionId": null,
-  "serverNameOverwrite": "";
+  "serverNameOverwrite": "",
   "streamOutputBlockSize": null,
   "streamOutputEOFSymbol": null,
   "streamOutputPath": null,
@@ -39,9 +40,10 @@ This page shows once the full possible request payload against the shared librar
   "timeoutSeconds": 0,
   "tlsClientIdentifier": "",
   "withDebug": false,
-  "withDefaultCookieJar": false,
+  "withCustomCookieJar": false,
   "withoutCookieJar": false,
-  "withRandomTLSExtensionOrder": false
+  "withRandomTLSExtensionOrder": false,
+  "euckrResponse": false
 }
 ```
 
@@ -62,15 +64,23 @@ This page shows once the full possible request payload against the shared librar
 * If you do not want to set `requestBody` or `proxyUrl` use `null` instead of empty string
 * When you set `isByteResponse` to `true` the response body will be a base64 encoded string. Useful when you want to download images for example.
 * When you set `isByteRequest` to `true` the request body needs to be a base64 encoded string. Useful when you want to upload images for example.
+* When you set `withProtocolRacing` to `true` the client will race HTTP/3 (QUIC) and HTTP/2 (TCP) connections in parallel, similar to Chrome's "Happy Eyeballs" approach. Cannot be used together with `forceHttp1` or `disableHttp3`.
+* When you set `euckrResponse` to `true` the response body will be decoded using EUC-KR encoding.
+* When you set `withCustomCookieJar` to `true` a custom TLS-Client cookie jar will be used which is more suited for certain use cases. Otherwise the default Go cookie jar is used.
 
 #### Custom TLS-Client
 
 ```
 {
-  "certCompressionAlgo": "",
+  "certCompressionAlgos": [],
   "connectionFlow": 0,
   "h2Settings": null,
   "h2SettingsOrder": null,
+  "h3Settings": null,
+  "h3SettingsOrder": null,
+  "h3PseudoHeaderOrder": null,
+  "h3PriorityParam": 0,
+  "h3SendGreaseFrames": false,
   "headerPriority": null,
   "ja3String": "",
   "keyShareCurves": null,
@@ -82,11 +92,14 @@ This page shows once the full possible request payload against the shared librar
   "pseudoHeaderOrder": null,
   "supportedDelegatedCredentialsAlgorithms": null,
   "supportedSignatureAlgorithms": null,
-  "supportedVersions": null
+  "supportedVersions": null,
+  "recordSizeLimit": 0,
+  "streamId": 0,
+  "allowHttp": false
 }
 ```
 
-<table><thead><tr><th width="277.3333333333333">Field</th><th width="258">Type</th><th>Descirption</th></tr></thead><tbody><tr><td>certCompressionAlgo</td><td>string</td><td>See possible values at the end of this page</td></tr><tr><td>connectionFlow</td><td>integer</td><td></td></tr><tr><td>h2Settings</td><td>Map&#x3C;string, int></td><td>See possible values for the Map keys at the end of this page.</td></tr><tr><td>h2SettingsOrder</td><td>Array&#x3C;string></td><td>Array of string keys which are used in the h2Settings property but ordered.</td></tr><tr><td>headerPriority</td><td>PriorityParam</td><td>See type definition below in next section</td></tr><tr><td>ja3String</td><td>string</td><td></td></tr><tr><td>keyShareCurves</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>priorityFrames</td><td>Array&#x3C;PriorityFrames></td><td>See type definition below in next section</td></tr><tr><td>alpnProtocols</td><td>Array&#x3C;string></td><td>List of supported protocols for the ALPN Extension</td></tr><tr><td>alpsProtocols</td><td>Array&#x3C;string></td><td>List of supported protocols for the ALPS Extension</td></tr><tr><td>ECHCandidatePayloads</td><td>Array&#x3C;uint16></td><td>List of ECH Candidate Payloads</td></tr><tr><td>ECHCandidateCipherSuites</td><td>Array&#x3C;CanidateCipherSuite></td><td>See type definition below in next section</td></tr><tr><td>pseudoHeaderOrder</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedDelegatedCredentialsAlgorithms</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedSignatureAlgorithms</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedVersions</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr></tbody></table>
+<table><thead><tr><th width="277.3333333333333">Field</th><th width="258">Type</th><th>Description</th></tr></thead><tbody><tr><td>certCompressionAlgos</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>connectionFlow</td><td>integer</td><td></td></tr><tr><td>h2Settings</td><td>Map&#x3C;string, int></td><td>See possible values for the Map keys at the end of this page.</td></tr><tr><td>h2SettingsOrder</td><td>Array&#x3C;string></td><td>Array of string keys which are used in the h2Settings property but ordered.</td></tr><tr><td>h3Settings</td><td>Map&#x3C;string, int></td><td>HTTP/3 settings. See possible values for the Map keys at the end of this page.</td></tr><tr><td>h3SettingsOrder</td><td>Array&#x3C;string></td><td>Array of string keys which are used in the h3Settings property but ordered.</td></tr><tr><td>h3PseudoHeaderOrder</td><td>Array&#x3C;string></td><td>Pseudo header order for HTTP/3 requests.</td></tr><tr><td>h3PriorityParam</td><td>integer</td><td>HTTP/3 priority parameter.</td></tr><tr><td>h3SendGreaseFrames</td><td>boolean</td><td>Whether to send GREASE frames in HTTP/3.</td></tr><tr><td>headerPriority</td><td>PriorityParam</td><td>See type definition below in next section</td></tr><tr><td>ja3String</td><td>string</td><td></td></tr><tr><td>keyShareCurves</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>priorityFrames</td><td>Array&#x3C;PriorityFrames></td><td>See type definition below in next section</td></tr><tr><td>alpnProtocols</td><td>Array&#x3C;string></td><td>List of supported protocols for the ALPN Extension</td></tr><tr><td>alpsProtocols</td><td>Array&#x3C;string></td><td>List of supported protocols for the ALPS Extension</td></tr><tr><td>ECHCandidatePayloads</td><td>Array&#x3C;uint16></td><td>List of ECH Candidate Payloads</td></tr><tr><td>ECHCandidateCipherSuites</td><td>Array&#x3C;CandidateCipherSuite></td><td>See type definition below in next section</td></tr><tr><td>pseudoHeaderOrder</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedDelegatedCredentialsAlgorithms</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedSignatureAlgorithms</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedVersions</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>recordSizeLimit</td><td>integer</td><td>TLS record size limit extension value</td></tr><tr><td>streamId</td><td>integer</td><td>Initial HTTP/2 stream ID</td></tr><tr><td>allowHttp</td><td>boolean</td><td>Allow plaintext HTTP connections</td></tr></tbody></table>
 
 #### TransportOptions
 
@@ -168,11 +181,13 @@ This page shows once the full possible request payload against the shared librar
   "maxAge": 0,
   "name": "",
   "path": "",
-  "value": ""
+  "value": "",
+  "secure": false,
+  "httpOnly": false
 }
 ```
 
-<table><thead><tr><th>Field</th><th width="148">Type</th><th>Description</th></tr></thead><tbody><tr><td>domain</td><td>string</td><td></td></tr><tr><td>expires</td><td>integer</td><td>Unix Timestamp</td></tr><tr><td>maxAge</td><td>integer</td><td>Number of seconds the cookie is valid.</td></tr><tr><td>name</td><td>string</td><td></td></tr><tr><td>path</td><td>string</td><td></td></tr><tr><td>value</td><td>string</td><td></td></tr></tbody></table>
+<table><thead><tr><th>Field</th><th width="148">Type</th><th>Description</th></tr></thead><tbody><tr><td>domain</td><td>string</td><td></td></tr><tr><td>expires</td><td>integer</td><td>Unix Timestamp</td></tr><tr><td>maxAge</td><td>integer</td><td>Number of seconds the cookie is valid.</td></tr><tr><td>name</td><td>string</td><td></td></tr><tr><td>path</td><td>string</td><td></td></tr><tr><td>value</td><td>string</td><td></td></tr><tr><td>secure</td><td>boolean</td><td>Whether the cookie should only be sent over HTTPS.</td></tr><tr><td>httpOnly</td><td>boolean</td><td>Whether the cookie is inaccessible to client-side scripts.</td></tr></tbody></table>
 
 If both `Expires` and `Max-Age` are set, `Max-Age` has precedence.
 
@@ -192,6 +207,15 @@ Here you can find the allowed possible string values to supply for fields like `
 "UNKNOWN_SETTING_7",
 "UNKNOWN_SETTING_8",
 "UNKNOWN_SETTING_9",
+```
+
+#### H3Settings
+
+```
+"QPACK_MAX_TABLE_CAPACITY",
+"MAX_FIELD_SECTION_SIZE",
+"QPACK_BLOCKED_STREAMS",
+"H3_DATAGRAM",
 ```
 
 #### Supported Versions
@@ -261,6 +285,7 @@ Here you can find the allowed possible string values to supply for fields like `
 "P256Kyber768",
 "X25519Kyber512D",
 "X25519Kyber768",
+"X25519Kyber768Old",
 "X25519MLKEM768",
 ```
 

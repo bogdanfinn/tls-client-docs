@@ -131,6 +131,37 @@ When instantiating the TLS client you can define various options which are docum
     ```
     WithConnectHeaders configures a client to use the specified headers for the CONNECT request
     ```
+*   WithProtocolRacing
+
+    ```
+    WithProtocolRacing configures a client to race HTTP/3 (QUIC) and HTTP/2 (TCP) connections in parallel.
+    Similar to Chrome's "Happy Eyeballs" approach, this starts both connection types simultaneously
+    and uses whichever connects first.
+    The client will remember which protocol worked for each host and use it directly on subsequent requests.
+    This option is ignored if WithForceHttp1 or WithDisableHttp3 is set.
+    ```
+*   WithBandwidthTracker
+
+    ```
+    WithBandwidthTracker configures a client to track the bandwidth used by the client.
+    You can retrieve the tracker via GetBandwidthTracker() and call GetTotalBandwidth(), GetWriteBytes(), GetReadBytes() or Reset() on it.
+    ```
+*   WithDialer
+
+    ```
+    WithDialer configures an HTTP client to use the specified dialer. This allows the use of a custom DNS resolver.
+    ```
+*   WithProxyDialerFactory
+
+    ```
+    WithProxyDialerFactory configures an HTTP client to use a custom proxyDialerFactory instead of the default newConnectDialer().
+    This allows to implement custom proxy dialer use cases.
+    ```
+*   WithEnableEuckrResponse
+
+    ```
+    WithEnableEuckrResponse configures the client to decode the response body using EUC-KR encoding.
+    ```
 
 #### Shared Library & Standalone API
 

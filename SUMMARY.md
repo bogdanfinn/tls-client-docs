@@ -12,6 +12,8 @@
   * [Certificate Pinning](tls-client/certificate-pinning.md)
   * [Response Body Encoding / Decoding](tls-client/response-body-encoding-decoding.md)
   * [Custom Client Profile](tls-client/custom-client-profile.md)
+  * [WebSocket](tls-client/websocket.md)
+  * [Protocol Racing](tls-client/protocol-racing.md)
   * [Examples](tls-client/examples.md)
 * [Shared Library](shared-library/README.md)
   * [Node Version](shared-library/node-version.md)
@@ -46,3 +48,4 @@
 * [Antibots & Captchas](antibots-and-captchas.md)
 * [Proxies](proxies.md)
 * [Community Projects](community-projects.md)
+* [Contributing](contributing.md)
