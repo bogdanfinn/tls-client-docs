@@ -162,6 +162,105 @@ When instantiating the TLS client you can define various options which are docum
     ```
     WithEnableEuckrResponse configures the client to decode the response body using EUC-KR encoding.
     ```
+*   WithDialContext
+
+    ```
+    WithDialContext sets a custom dialer for TCP connections, allowing advanced networking
+    (Zero-DNS, socket tagging, DPI bypass).
+
+    WARNING: This overrides built-in proxy settings. If you need a proxy, you must handle the CONNECT handshake manually.
+    ```
+
+    Example:
+    ```go
+    client, err := tls_client.NewHttpClient(
+        tls_client.NewNoopLogger(),
+        tls_client.WithClientProfile(profiles.Chrome_124),
+        tls_client.WithDialContext(func(ctx context.Context, network, addr string) (net.Conn, error) {
+            // Custom dialing logic here
+            return net.Dial(network, addr)
+        }),
+    )
+    ```
+*   WithPreHook
+
+    ```
+    WithPreHook adds a pre-request hook that is called before each request is sent.
+    Multiple hooks can be added and they will be executed in the order they were added.
+    If any hook returns an error, the request is aborted and subsequent hooks are not called.
+    To continue hook execution despite an error, wrap your error with ErrContinueHooks.
+    ```
+
+    The hook function signature is:
+    ```go
+    type PreRequestHookFunc func(req *http.Request) error
+    ```
+
+    Example:
+    ```go
+    client, err := tls_client.NewHttpClient(
+        tls_client.NewNoopLogger(),
+        tls_client.WithClientProfile(profiles.Chrome_124),
+        tls_client.WithPreHook(func(req *http.Request) error {
+            req.Header.Set("X-Custom-Header", "my-value")
+            return nil
+        }),
+    )
+    ```
+
+    You can also add hooks at runtime using `client.AddPreRequestHook(hook)`.
+*   WithPostHook
+
+    ```
+    WithPostHook adds a post-response hook that is called after each request completes.
+    Multiple hooks can be added and they will be executed in the order they were added.
+    Hooks receive a PostResponseContext containing the request, response, and any error that occurred.
+    If a hook returns an error, subsequent hooks are not called (unless wrapped with ErrContinueHooks).
+    ```
+
+    The hook function signature and context struct are:
+    ```go
+    type PostResponseContext struct {
+        Request  *http.Request
+        Response *http.Response
+        Error    error // Non-nil if request failed
+    }
+
+    type PostResponseHookFunc func(ctx *PostResponseContext) error
+    ```
+
+    Example:
+    ```go
+    client, err := tls_client.NewHttpClient(
+        tls_client.NewNoopLogger(),
+        tls_client.WithClientProfile(profiles.Chrome_124),
+        tls_client.WithPostHook(func(ctx *tls_client.PostResponseContext) error {
+            if ctx.Error != nil {
+                log.Printf("Request failed: %v", ctx.Error)
+            } else {
+                log.Printf("Response status: %d", ctx.Response.StatusCode)
+            }
+            return nil
+        }),
+    )
+    ```
+
+    You can also add hooks at runtime using `client.AddPostResponseHook(hook)`.
+*   ErrContinueHooks
+
+    ```
+    ErrContinueHooks can be returned (or wrapped) by a hook function to signal that
+    the error should be logged but hook execution should continue to the next hook.
+    By default any error returned from a hook aborts subsequent hooks (and for pre-hooks, the request).
+    ```
+
+    Example:
+    ```go
+    tls_client.WithPreHook(func(req *http.Request) error {
+        // This error will be logged but subsequent hooks and the request will continue
+        return fmt.Errorf("something went wrong: %w", tls_client.ErrContinueHooks)
+    })
+    ```
 
 #### Shared Library & Standalone API
 
