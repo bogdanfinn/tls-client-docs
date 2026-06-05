@@ -55,6 +55,12 @@ It is possible to disable the automatic decompression on http2 by adding the fol
 	}),
 ```
 
+#### Automatic Charset Detection
+
+When using the shared library or standalone API, the response body charset is automatically detected and decoded based on the `Content-Type` response header (e.g. `charset=euc-kr`, `charset=shift_jis`, etc.). This means you no longer need to handle specific encodings manually — the correct character encoding is applied automatically for all text responses.
+
+This behavior is active whenever `isByteResponse` is `false` (the default). If you need the raw bytes, set `isByteResponse: true`.
+
 #### Shared Library & Standalone API
 
-When you are using the shared library or standalone api application the response body will always be decompressed.
+When you are using the shared library or standalone api application the response body will always be decompressed and the charset will be automatically detected and decoded.

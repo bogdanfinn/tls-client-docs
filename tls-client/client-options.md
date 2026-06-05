@@ -27,6 +27,16 @@ When instantiating the TLS client you can define various options which are docum
     ```
     WithTransportOptions configures a client to use the specified transport options.
     ```
+
+    The `TransportOptions` struct supports the following fields for client certificate authentication:
+
+    ```go
+    tls_client.WithTransportOptions(&tls_client.TransportOptions{
+        // Certificates is a list of client TLS certificates for mutual TLS (mTLS).
+        // Load certificates with tls.LoadX509KeyPair or tls.X509KeyPair.
+        Certificates: []tls.Certificate{clientCert},
+    })
+    ```
 *   WithProxyUrl
 
     ```
@@ -54,14 +64,26 @@ When instantiating the TLS client you can define various options which are docum
 *   WithTimeoutMilliseconds
 
     ```
-    WithTimeoutMilliseconds configures an HTTP client to use the specified request timeout.
-    timeout is the request timeout in milliseconds.
+    WithTimeoutMilliseconds configures a hard deadline for the entire request lifecycle.
+
+    This includes connection time, redirects, and reading the response body.
+    WARNING: If the timer expires, the connection is forcibly closed, even if you are
+    actively downloading data.
+
+    - Use 0 to disable the deadline (unlimited) for large downloads or long-polling.
+    - Default is 30000 milliseconds (30 seconds).
     ```
 *   WithTimeoutSeconds
 
     ```
-    WithTimeoutSeconds configures an HTTP client to use the specified request timeout.
-    timeout is the request timeout in seconds.
+    WithTimeoutSeconds configures a hard deadline for the entire request lifecycle.
+
+    This includes connection time, redirects, and reading the response body.
+    WARNING: If the timer expires, the connection is forcibly closed, even if you are
+    actively downloading data.
+
+    - Use 0 to disable the deadline (unlimited) for large downloads or long-polling.
+    - Default is 30 seconds.
     ```
 *   WithTimeout
 
@@ -156,11 +178,6 @@ When instantiating the TLS client you can define various options which are docum
     ```
     WithProxyDialerFactory configures an HTTP client to use a custom proxyDialerFactory instead of the default newConnectDialer().
     This allows to implement custom proxy dialer use cases.
-    ```
-*   WithEnableEuckrResponse
-
-    ```
-    WithEnableEuckrResponse configures the client to decode the response body using EUC-KR encoding.
     ```
 *   WithDialContext
 

@@ -42,8 +42,7 @@ This page shows once the full possible request payload against the shared librar
   "withDebug": false,
   "withCustomCookieJar": false,
   "withoutCookieJar": false,
-  "withRandomTLSExtensionOrder": false,
-  "euckrResponse": false
+  "withRandomTLSExtensionOrder": false
 }
 ```
 
@@ -65,7 +64,6 @@ This page shows once the full possible request payload against the shared librar
 * When you set `isByteResponse` to `true` the response body will be a base64 encoded string. Useful when you want to download images for example.
 * When you set `isByteRequest` to `true` the request body needs to be a base64 encoded string. Useful when you want to upload images for example.
 * When you set `withProtocolRacing` to `true` the client will race HTTP/3 (QUIC) and HTTP/2 (TCP) connections in parallel, similar to Chrome's "Happy Eyeballs" approach. Cannot be used together with `forceHttp1` or `disableHttp3`.
-* When you set `euckrResponse` to `true` the response body will be decoded using EUC-KR encoding.
 * When you set `withCustomCookieJar` to `true` a custom TLS-Client cookie jar will be used which is more suited for certain use cases. Otherwise the default Go cookie jar is used.
 
 #### Custom TLS-Client

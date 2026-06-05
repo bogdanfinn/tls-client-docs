@@ -26,10 +26,13 @@ The internal client profiles were created and tested by myself. Of course that d
    * 144 with PSK (chrome\_144\_PSK)
    * 146 (chrome\_146)
    * 146 with PSK (chrome\_146\_PSK)
-2. Safari
+2. Brave
+   * 146 (brave\_146)
+   * 146 with PSK (brave\_146\_PSK)
+3. Safari
    * 15.6.1 (safari\_15\_6\_1)
    * 16.0 (safari\_16\_0)
-3. iOS (Safari)
+4. iOS (Safari)
    * 15.5 (safari\_ios\_15\_5)
    * 15.6 (safari\_ios\_15\_6)
    * 16.0 (safari\_ios\_16\_0)
@@ -37,9 +40,9 @@ The internal client profiles were created and tested by myself. Of course that d
    * 18.0 (safari\_ios\_18\_0)
    * 18.5 (safari\_ios\_18\_5)
    * 26.0 (safari\_ios\_26\_0)
-4. iPadOS (Safari)
+5. iPadOS (Safari)
    * 15.6 (safari\_ipad\_15\_6)
-5. Firefox
+6. Firefox
    * 102 (firefox\_102)
    * 104 (firefox\_104)
    * 105 (firefox\_105)
@@ -47,11 +50,11 @@ The internal client profiles were created and tested by myself. Of course that d
    * 108 (firefox\_108)
    * 110 (firefox\_110)
    * 117 (firefox\_117)
-6. Opera
+7. Opera
    * 89 (opera\_89)
    * 90 (opera\_90)
    * 91 (opera\_91)
-7. Custom Clients
+8. Custom Clients
    * Zalando iOS Mobile (zalando\_ios\_mobile)
    * Nike IOS Mobile (nike\_ios\_mobile)
    * Cloudscraper
@@ -93,6 +96,7 @@ The contributed client profiles are contributed by people from the community. Th
    * 146 with PSK (firefox\_146\_PSK)
    * 147 (firefox\_147)
    * 147 with PSK (firefox\_147\_PSK)
+   * 148 (firefox\_148)
 
 You can also provide your own client. See the examples how to do that.
 
