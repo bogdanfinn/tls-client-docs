@@ -11,4 +11,7 @@ We provide examples for the following use cases:
 * Async Request
 * Custom Client&#x20;
 * Use Cookies
+* Proxy Rotation
+* Switching the Redirect Following Behavior
+* Certificate Pinning
 

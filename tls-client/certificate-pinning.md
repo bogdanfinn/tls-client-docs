@@ -70,3 +70,7 @@ Just install the tool and run the following command against the site you want to
 ```
 hpkp-pins -server=bstn.com:443
 ```
+
+### Example
+
+A runnable version is in [`./example/certificate_pinning`](https://github.com/bogdanfinn/tls-client/tree/master/example/certificate_pinning).

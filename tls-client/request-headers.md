@@ -32,3 +32,7 @@ Sometimes people are confused when to write header keys all lowercase and when t
 `"accept-encoding"` => HTTP2
 
 `"Accept-Encoding"` => HTTP1
+
+### Example
+
+A runnable version is in [`./example/headers`](https://github.com/bogdanfinn/tls-client/tree/master/example/headers).

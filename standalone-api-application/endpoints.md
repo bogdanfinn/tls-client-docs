@@ -9,7 +9,7 @@ curl --location --request POST '127.0.0.1:8080/api/forward' \
 --header 'x-api-key: my-auth-key-1' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "tlsClientIdentifier": "chrome_105",
+    "tlsClientIdentifier": "chrome_150",
     "requestUrl": "https://tls.peet.ws/api/all",
     "requestMethod": "GET"
 }'

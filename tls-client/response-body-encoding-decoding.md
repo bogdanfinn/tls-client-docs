@@ -19,7 +19,7 @@ req.Header = http.Header{
     "accept":          {"*/*"},
     "accept-encoding": {"gzip"},
     "accept-language": {"de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"},
-    "user-agent":      {"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"},
+    "user-agent":      {"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"},
     http.HeaderOrderKey: {
         "accept",
         "accept-encoding",
@@ -64,3 +64,7 @@ This behavior is active whenever `isByteResponse` is `false` (the default). If y
 #### Shared Library & Standalone API
 
 When you are using the shared library or standalone api application the response body will always be decompressed and the charset will be automatically detected and decoded.
+
+### Example
+
+A runnable version is in [`./example/decompress`](https://github.com/bogdanfinn/tls-client/tree/master/example/decompress).

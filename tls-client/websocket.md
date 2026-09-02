@@ -9,7 +9,7 @@ The TLS-Client supports WebSocket connections with the same TLS fingerprinting a
 ```go
 // Create HTTP client with ForceHttp1 (required for WebSocket!)
 client, err := tls_client.NewHttpClient(tls_client.NewNoopLogger(),
-    tls_client.WithClientProfile(profiles.Chrome_133),
+    tls_client.WithClientProfile(profiles.Chrome_150),
     tls_client.WithForceHttp1(),
 )
 
@@ -69,3 +69,7 @@ defer conn.Close()
     ```
     WithCookiejar sets the cookie jar to use for the WebSocket connection.
     ```
+
+### Example
+
+A runnable version is in [`./example/websocket`](https://github.com/bogdanfinn/tls-client/tree/master/example/websocket).
