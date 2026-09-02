@@ -19,6 +19,8 @@ req.Header = http.Header{
 	}
 ```
 
+The header order is applied for HTTP/1.1, HTTP/2 and HTTP/3 requests alike.
+
 #### Shared Library & Standalone API
 
 When you are using the shared library or the standalone api this works exactly the same. You can provide the header order with the same Header Order key.&#x20;

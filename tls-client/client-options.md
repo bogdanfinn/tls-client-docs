@@ -17,6 +17,15 @@ When instantiating the TLS client you can define various options which are docum
     ```
     WithDisableHttp3 configures a client to disable HTTP 3 as the used protocol. Will most likely fall back to HTTP 2
     ```
+*   WithDisableSessionTickets
+
+    ```
+    WithDisableSessionTickets configures a client to disable TLS session ticket caching and resumption.
+    ```
+
+    Session resumption is only used by profiles that support it (those sending a PSK extension).
+    For those, the client keeps a session cache and can resume a TLS session instead of doing a
+    full handshake. Disable it if you want every connection to perform a full handshake.
 *   WithInsecureSkipVerify
 
     ```
@@ -44,6 +53,11 @@ When instantiating the TLS client you can define various options which are docum
     proxyUrl should be formatted as:
     "http://user:pass@host:port"
     ```
+
+    HTTP, HTTPS, SOCKS4 and SOCKS5 proxies are supported. If you also enable
+    `WithProtocolRacing()` the proxy has to be a `socks5://` or `socks5h://` proxy, because
+    HTTP/3 runs over UDP and only SOCKS5 can tunnel it (via UDP ASSOCIATE). Any other scheme
+    is rejected with an error. See [Protocol Racing](protocol-racing.md).
 *   WithCharlesProxy
 
     ```
@@ -162,6 +176,10 @@ When instantiating the TLS client you can define various options which are docum
     The client will remember which protocol worked for each host and use it directly on subsequent requests.
     This option is ignored if WithForceHttp1 or WithDisableHttp3 is set.
     ```
+
+    When combined with a proxy, the proxy has to be a `socks5://` or `socks5h://` proxy that
+    supports UDP ASSOCIATE. Any other proxy scheme is rejected with an error, because it could
+    only carry the HTTP/2 leg and would let the HTTP/3 leg bypass the proxy.
 *   WithBandwidthTracker
 
     ```

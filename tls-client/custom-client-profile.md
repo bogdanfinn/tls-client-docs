@@ -35,6 +35,7 @@ You can create a `ClientHelloSpecFactory` out of a ja3 string by calling GetSpec
 * A list of supported key share curves
 * A list of certificate compression algorithms.
 * A value for the RecordSizeLimit Extension
+* The payload for the trust_anchors extension, if your ja3 string lists extension `51764`
 
 ```go
 	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,0-10-11-13-16-23-43-51-65281-45-21,29-23-24,0"
@@ -73,10 +74,19 @@ You can create a `ClientHelloSpecFactory` out of a ja3 string by calling GetSpec
 	cp := []uint16{128, 160, 192, 224}
 	certCompressionAlgos := []string{"zlib"}
 	recordSizeLimit := 0
+	trustAnchorsPayload := "" // hex payload, only needed if the ja3 string lists extension 51764
 	
-	specFunc, err := tls_client.GetSpecFactoryFromJa3String(input, ssa, dca, sv, sc, alpnProtocols, alpsProtocols, ccs, cp, certCompressionAlgos, recordSizeLimit)
+	specFunc, err := tls_client.GetSpecFactoryFromJa3String(input, ssa, dca, sv, sc, alpnProtocols, alpsProtocols, ccs, cp, certCompressionAlgos, recordSizeLimit, trustAnchorsPayload)
 
 ```
+
+#### The trust_anchors extension (51764)
+
+Chrome 144 and later send the trust_anchors extension. A ja3 string names extension IDs but carries no extension data, so when your ja3 string contains `51764` the payload has to come alongside it as a hex string. Leaving it empty in that case fails with an error naming the parameter.
+
+Take the value from the `data` field of the `Unknown extension 51764` entry in a browser fingerprint; it already starts at the 16-bit list length. `"0000"` is an empty anchor list, which is what the Chrome 144 and Chrome 146 profiles send.
+
+The IDs are reordered once per spec factory, because Chromium writes them in hash set iteration order, which holds for the life of a browser process and differs between processes. `profiles.BuildTrustAnchorsPayload` does that on its own if you build the extension by hand.
 
 At the end you can just build the complete custom profile by providing all the above mentioned information.
 
@@ -118,8 +128,9 @@ ccs := []tls_client.CandidateCipherSuites{
 cp := []uint16{128, 160, 192, 224}
 certCompressionAlgos := []string{"zlib"}
 recordSizeLimit := 0
+trustAnchorsPayload := "" // hex payload, only needed if the ja3 string lists extension 51764
 	
-specFunc, err := tls_client.GetSpecFactoryFromJa3String(input, ssa, dca, sv, sc, alpnProtocols, alpsProtocols, ccs, cp, certCompressionAlgos, recordSizeLimit)
+specFunc, err := tls_client.GetSpecFactoryFromJa3String(input, ssa, dca, sv, sc, alpnProtocols, alpsProtocols, ccs, cp, certCompressionAlgos, recordSizeLimit, trustAnchorsPayload)
 
 if err != nil {
    log.Println(err.Error())

@@ -13,6 +13,7 @@ This page shows once the full possible request payload against the shared librar
   "followRedirects": false,
   "forceHttp1": false,
   "disableHttp3": false,
+  "disableSessionTickets": false,
   "withProtocolRacing": false,
   "headerOrder": null,
   "headers": null,
@@ -63,8 +64,28 @@ This page shows once the full possible request payload against the shared librar
 * If you do not want to set `requestBody` or `proxyUrl` use `null` instead of empty string
 * When you set `isByteResponse` to `true` the response body will be a base64 encoded string. Useful when you want to download images for example.
 * When you set `isByteRequest` to `true` the request body needs to be a base64 encoded string. Useful when you want to upload images for example.
-* When you set `withProtocolRacing` to `true` the client will race HTTP/3 (QUIC) and HTTP/2 (TCP) connections in parallel, similar to Chrome's "Happy Eyeballs" approach. Cannot be used together with `forceHttp1` or `disableHttp3`.
+* When you set `withProtocolRacing` to `true` the client will race HTTP/3 (QUIC) and HTTP/2 (TCP) connections in parallel, similar to Chrome's "Happy Eyeballs" approach. Cannot be used together with `forceHttp1` or `disableHttp3`. If you also set a `proxyUrl` it has to be a `socks5://` or `socks5h://` proxy that supports UDP ASSOCIATE, since only SOCKS5 can tunnel the UDP traffic HTTP/3 needs. Any other proxy scheme is rejected with an error.
+* When you set `disableSessionTickets` to `true` the client does not cache TLS session tickets and never resumes a TLS session, so every connection performs a full handshake. Only profiles that support session resumption (those sending a PSK extension) are affected.
 * When you set `withCustomCookieJar` to `true` a custom TLS-Client cookie jar will be used which is more suited for certain use cases. Otherwise the default Go cookie jar is used.
+
+The `supportedSignatureAlgorithms` list of a custom TLS client additionally accepts `MLDSA44`, `MLDSA65`, `MLDSA87` and `GREASE`, which the Chrome 150 and Chrome 152 profiles use. `GREASE` is replaced with a value drawn from the connection's seed, so it changes per connection just like the built in profiles.
+
+##### trustAnchorsPayload
+
+Chrome 144 and later send the trust_anchors extension (`51764`). A ja3 string lists extension IDs but carries no extension data, so if your `ja3String` contains `51764` you have to supply its payload separately in `trustAnchorsPayload`, as a hex string. Leaving it empty while the ja3 string asks for the extension fails the request with an error naming this field.
+
+To get the value, open your fingerprint source in the browser you want to imitate, find the entry named `Unknown extension 51764` in the `tls.extensions` array and copy its `data` field whole. It already starts at the 16-bit list length.
+
+```
+{
+  "ja3String": "771,...-51764,...",
+  "trustAnchorsPayload": "00b80582df13020108839a648c9b2d010c08839a648c9b2d0107..."
+}
+```
+
+Pass `"0000"` for an empty anchor list, which is what the Chrome 144 and Chrome 146 profiles send.
+
+The anchor IDs are put in a fresh order once per client, because Chromium writes them in hash set iteration order, which stays the same for the life of a browser process and differs between processes. So the bytes on the wire are a reordering of what you supply, not a copy of it.
 
 #### Custom TLS-Client
 
@@ -81,6 +102,7 @@ This page shows once the full possible request payload against the shared librar
   "h3SendGreaseFrames": false,
   "headerPriority": null,
   "ja3String": "",
+  "trustAnchorsPayload": "",
   "keyShareCurves": null,
   "priorityFrames": null,
   "alpnProtocols": null,
@@ -97,7 +119,7 @@ This page shows once the full possible request payload against the shared librar
 }
 ```
 
-<table><thead><tr><th width="277.3333333333333">Field</th><th width="258">Type</th><th>Description</th></tr></thead><tbody><tr><td>certCompressionAlgos</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>connectionFlow</td><td>integer</td><td></td></tr><tr><td>h2Settings</td><td>Map&#x3C;string, int></td><td>See possible values for the Map keys at the end of this page.</td></tr><tr><td>h2SettingsOrder</td><td>Array&#x3C;string></td><td>Array of string keys which are used in the h2Settings property but ordered.</td></tr><tr><td>h3Settings</td><td>Map&#x3C;string, int></td><td>HTTP/3 settings. See possible values for the Map keys at the end of this page.</td></tr><tr><td>h3SettingsOrder</td><td>Array&#x3C;string></td><td>Array of string keys which are used in the h3Settings property but ordered.</td></tr><tr><td>h3PseudoHeaderOrder</td><td>Array&#x3C;string></td><td>Pseudo header order for HTTP/3 requests.</td></tr><tr><td>h3PriorityParam</td><td>integer</td><td>HTTP/3 priority parameter.</td></tr><tr><td>h3SendGreaseFrames</td><td>boolean</td><td>Whether to send GREASE frames in HTTP/3.</td></tr><tr><td>headerPriority</td><td>PriorityParam</td><td>See type definition below in next section</td></tr><tr><td>ja3String</td><td>string</td><td></td></tr><tr><td>keyShareCurves</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>priorityFrames</td><td>Array&#x3C;PriorityFrames></td><td>See type definition below in next section</td></tr><tr><td>alpnProtocols</td><td>Array&#x3C;string></td><td>List of supported protocols for the ALPN Extension</td></tr><tr><td>alpsProtocols</td><td>Array&#x3C;string></td><td>List of supported protocols for the ALPS Extension</td></tr><tr><td>ECHCandidatePayloads</td><td>Array&#x3C;uint16></td><td>List of ECH Candidate Payloads</td></tr><tr><td>ECHCandidateCipherSuites</td><td>Array&#x3C;CandidateCipherSuite></td><td>See type definition below in next section</td></tr><tr><td>pseudoHeaderOrder</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedDelegatedCredentialsAlgorithms</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedSignatureAlgorithms</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedVersions</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>recordSizeLimit</td><td>integer</td><td>TLS record size limit extension value</td></tr><tr><td>streamId</td><td>integer</td><td>Initial HTTP/2 stream ID</td></tr><tr><td>allowHttp</td><td>boolean</td><td>Allow plaintext HTTP connections</td></tr></tbody></table>
+<table><thead><tr><th width="277.3333333333333">Field</th><th width="258">Type</th><th>Description</th></tr></thead><tbody><tr><td>certCompressionAlgos</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>connectionFlow</td><td>integer</td><td></td></tr><tr><td>h2Settings</td><td>Map&#x3C;string, int></td><td>See possible values for the Map keys at the end of this page.</td></tr><tr><td>h2SettingsOrder</td><td>Array&#x3C;string></td><td>Array of string keys which are used in the h2Settings property but ordered.</td></tr><tr><td>h3Settings</td><td>Map&#x3C;string, int></td><td>HTTP/3 settings. See possible values for the Map keys at the end of this page.</td></tr><tr><td>h3SettingsOrder</td><td>Array&#x3C;string></td><td>Array of string keys which are used in the h3Settings property but ordered.</td></tr><tr><td>h3PseudoHeaderOrder</td><td>Array&#x3C;string></td><td>Pseudo header order for HTTP/3 requests.</td></tr><tr><td>h3PriorityParam</td><td>integer</td><td>HTTP/3 priority parameter.</td></tr><tr><td>h3SendGreaseFrames</td><td>boolean</td><td>Whether to send GREASE frames in HTTP/3.</td></tr><tr><td>headerPriority</td><td>PriorityParam</td><td>See type definition below in next section</td></tr><tr><td>ja3String</td><td>string</td><td></td></tr><tr><td>trustAnchorsPayload</td><td>string</td><td>Hex payload for the trust_anchors extension (51764). Required if your ja3String lists that extension, since a ja3 string carries extension IDs but no extension data. See the note below.</td></tr><tr><td>keyShareCurves</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>priorityFrames</td><td>Array&#x3C;PriorityFrames></td><td>See type definition below in next section</td></tr><tr><td>alpnProtocols</td><td>Array&#x3C;string></td><td>List of supported protocols for the ALPN Extension</td></tr><tr><td>alpsProtocols</td><td>Array&#x3C;string></td><td>List of supported protocols for the ALPS Extension</td></tr><tr><td>ECHCandidatePayloads</td><td>Array&#x3C;uint16></td><td>List of ECH Candidate Payloads</td></tr><tr><td>ECHCandidateCipherSuites</td><td>Array&#x3C;CandidateCipherSuite></td><td>See type definition below in next section</td></tr><tr><td>pseudoHeaderOrder</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedDelegatedCredentialsAlgorithms</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedSignatureAlgorithms</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>supportedVersions</td><td>Array&#x3C;string></td><td>See possible values at the end of this page</td></tr><tr><td>recordSizeLimit</td><td>integer</td><td>TLS record size limit extension value</td></tr><tr><td>streamId</td><td>integer</td><td>Initial HTTP/2 stream ID</td></tr><tr><td>allowHttp</td><td>boolean</td><td>Allow plaintext HTTP connections</td></tr></tbody></table>
 
 #### TransportOptions
 
@@ -243,7 +265,13 @@ Here you can find the allowed possible string values to supply for fields like `
 "Ed25519",
 "SHA224_RSA",
 "SHA224_ECDSA",
+"MLDSA44",
+"MLDSA65",
+"MLDSA87",
+"GREASE",
 ```
+
+`MLDSA44`, `MLDSA65` and `MLDSA87` are the post quantum codepoints Chrome 150 and later advertise. `GREASE` is replaced with a value drawn from the connection's seed, so it differs per connection, the way Chrome 152 sends it. Both are only available for `supportedSignatureAlgorithms`, not for `supportedDelegatedCredentialsAlgorithms`.
 
 #### certCompressionAlgorithm
 

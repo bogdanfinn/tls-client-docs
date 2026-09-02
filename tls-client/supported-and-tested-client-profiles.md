@@ -26,6 +26,10 @@ The internal client profiles were created and tested by myself. Of course that d
    * 144 with PSK (chrome\_144\_PSK)
    * 146 (chrome\_146)
    * 146 with PSK (chrome\_146\_PSK)
+   * 150 (chrome\_150)
+   * 150 with PSK (chrome\_150\_PSK)
+   * 152 (chrome\_152)
+   * 152 with PSK (chrome\_152\_PSK)
 2. Brave
    * 146 (brave\_146)
    * 146 with PSK (brave\_146\_PSK)
