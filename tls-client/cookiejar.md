@@ -33,3 +33,7 @@ client, err := tls_client.NewHttpClient(logger, options...)
 #### Shared Library & Standalone API
 
 If you are using the shared library or standalone api you can either completely deactiavte cookie jar handling by setting `"withoutCookieJar"` to `true` or you can switch to the default Go cookiejar by setting `"withDefaultCookieJar"` to `true`. By default the Custom Cookiejar will always be used.
+
+### Example
+
+A runnable version is in [`./example/cookies`](https://github.com/bogdanfinn/tls-client/tree/master/example/cookies).

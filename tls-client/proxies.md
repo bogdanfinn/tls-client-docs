@@ -17,3 +17,7 @@ Clients without protocol racing are unaffected and work with every supported pro
 #### Shared Library & Standalone API
 
 When you are using the shared library or the standalone api you can supply a proxy in the `"proxyUrl"` field and set `"isRotatingProxy"` to `true` or `false`.
+
+### Example
+
+A runnable version, including switching the proxy on an existing client, is in [`./example/proxy`](https://github.com/bogdanfinn/tls-client/tree/master/example/proxy). For protocol racing over a proxy see [Protocol Racing](protocol-racing.md) and [`./example/protocol_racing`](https://github.com/bogdanfinn/tls-client/tree/master/example/protocol_racing).

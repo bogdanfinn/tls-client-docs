@@ -32,7 +32,7 @@ func main() {
     	jar := tls_client.NewCookieJar()
 	options := []tls_client.HttpClientOption{
 		tls_client.WithTimeoutSeconds(30),
-		tls_client.WithClientProfile(profiles.Chrome_120),
+		tls_client.WithClientProfile(profiles.Chrome_150),
 		tls_client.WithNotFollowRedirects(),
 		tls_client.WithCookieJar(jar), // create cookieJar instance and pass it as argument
 		//tls_client.WithProxyUrl("http://user:pass@host:port"),
@@ -54,7 +54,7 @@ func main() {
 	req.Header = http.Header{
 		"accept":                    {"*/*"},
 		"accept-language":           {"de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"},
-		"user-agent":                {"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"},
+		"user-agent":                {"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"},
 		http.HeaderOrderKey: {
 			"accept",
 			"accept-language",

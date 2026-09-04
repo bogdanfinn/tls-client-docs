@@ -210,7 +210,7 @@ When instantiating the TLS client you can define various options which are docum
     ```go
     client, err := tls_client.NewHttpClient(
         tls_client.NewNoopLogger(),
-        tls_client.WithClientProfile(profiles.Chrome_124),
+        tls_client.WithClientProfile(profiles.Chrome_150),
         tls_client.WithDialContext(func(ctx context.Context, network, addr string) (net.Conn, error) {
             // Custom dialing logic here
             return net.Dial(network, addr)
@@ -235,7 +235,7 @@ When instantiating the TLS client you can define various options which are docum
     ```go
     client, err := tls_client.NewHttpClient(
         tls_client.NewNoopLogger(),
-        tls_client.WithClientProfile(profiles.Chrome_124),
+        tls_client.WithClientProfile(profiles.Chrome_150),
         tls_client.WithPreHook(func(req *http.Request) error {
             req.Header.Set("X-Custom-Header", "my-value")
             return nil
@@ -268,7 +268,7 @@ When instantiating the TLS client you can define various options which are docum
     ```go
     client, err := tls_client.NewHttpClient(
         tls_client.NewNoopLogger(),
-        tls_client.WithClientProfile(profiles.Chrome_124),
+        tls_client.WithClientProfile(profiles.Chrome_150),
         tls_client.WithPostHook(func(ctx *tls_client.PostResponseContext) error {
             if ctx.Error != nil {
                 log.Printf("Request failed: %v", ctx.Error)
@@ -296,6 +296,26 @@ When instantiating the TLS client you can define various options which are docum
         return fmt.Errorf("something went wrong: %w", tls_client.ErrContinueHooks)
     })
     ```
+
+#### Examples
+
+Several of the options above have a runnable example of their own:
+
+| Option | Example |
+| --- | --- |
+| `WithProtocolRacing` | [`./example/protocol_racing`](https://github.com/bogdanfinn/tls-client/tree/master/example/protocol_racing) |
+| `WithDisableSessionTickets` | [`./example/session_tickets`](https://github.com/bogdanfinn/tls-client/tree/master/example/session_tickets) |
+| `WithBandwidthTracker` | [`./example/bandwidth`](https://github.com/bogdanfinn/tls-client/tree/master/example/bandwidth) |
+| `WithPreHook` / `WithPostHook` / `ErrContinueHooks` | [`./example/hooks`](https://github.com/bogdanfinn/tls-client/tree/master/example/hooks) |
+| `WithCertificatePinning` | [`./example/certificate_pinning`](https://github.com/bogdanfinn/tls-client/tree/master/example/certificate_pinning) |
+| `WithClientProfile` | [`./example/custom_profile`](https://github.com/bogdanfinn/tls-client/tree/master/example/custom_profile), [`./example/custom_spec`](https://github.com/bogdanfinn/tls-client/tree/master/example/custom_spec) |
+| `WithProxyUrl` | [`./example/proxy`](https://github.com/bogdanfinn/tls-client/tree/master/example/proxy) |
+| `WithNotFollowRedirects` | [`./example/redirects`](https://github.com/bogdanfinn/tls-client/tree/master/example/redirects) |
+| `WithCookieJar` | [`./example/cookies`](https://github.com/bogdanfinn/tls-client/tree/master/example/cookies) |
+| `WithTransportOptions` | [`./example/concurrency`](https://github.com/bogdanfinn/tls-client/tree/master/example/concurrency) |
+| `WithForceHttp1` | [`./example/websocket`](https://github.com/bogdanfinn/tls-client/tree/master/example/websocket), [`./example/decompress`](https://github.com/bogdanfinn/tls-client/tree/master/example/decompress) |
+
+The full list is on the [Examples](examples.md) page.
 
 #### Shared Library & Standalone API
 

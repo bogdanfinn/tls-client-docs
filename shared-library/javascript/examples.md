@@ -11,5 +11,8 @@ We provide examples for the following use cases:
 * Async Request
 * Custom Client
 * Use Cookies
+* Proxy Rotation
+* Switching the Redirect Following Behavior
+* Certificate Pinning
 * Use ffi-rs instead of ffi-napi
 

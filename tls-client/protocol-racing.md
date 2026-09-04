@@ -85,3 +85,7 @@ If the HTTP/3 fingerprint matters for your target, use one of the five profiles 
 Both legs of a race are handed the same `*http.Request`. The HTTP/3 transport writes to its header map while the HTTP/2 transport reads from it, which the Go race detector reports as a data race. It is unlikely to be observed on an occasional request but shows up reliably when many requests race at the same time, and a concurrent map access can crash the process.
 
 If you send a high volume of concurrent requests, prefer `WithDisableHttp3()` until this is fixed.
+
+### Example
+
+A runnable version of everything above, including the rejected proxy schemes, is in [`./example/protocol_racing`](https://github.com/bogdanfinn/tls-client/tree/master/example/protocol_racing).
