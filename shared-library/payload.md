@@ -53,7 +53,7 @@ This page shows once the full possible request payload against the shared librar
 | ------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | headers             | Map\<string, string>         | Headers to attach on the current request. defaultHeaders will be used when empty.                                                        |
 | defaultHeaders      | Map\<string, Array\<string>> | Default Headers to be used when no request headers are specified. The default header order can be specified with the Key "Header-Order:" |
-| connectHeaders      | Map\<string,Array\<string>>  | Headers to be used during the CONNECT request.                                                                                           |
+| connectHeaders      | Map\<string,Array\<string>>  | Headers to be used during the CONNECT request. Set `User-Agent` to an empty string or an empty list to send no `User-Agent`.             |
 | serverNameOverwrite | string                       | Lookup [Client Option ](../tls-client/client-options.md)"WithServerNameOverwrite"                                                        |
 
 
@@ -134,6 +134,8 @@ The anchor IDs are put in a fresh order once per client, because Chromium writes
   "writeBufferSize": 0,
   "readBufferSize": 0,
   "idleConnTimeout": 0,
+  "readIdleTimeout": 0,
+  "pingTimeout": 0,
 }
 ```
 
@@ -148,6 +150,8 @@ The anchor IDs are put in a fresh order once per client, because Chromium writes
 | writeBufferSize        | integer | If zero, a default (currently 4KB) is used                                                                        |
 | readBufferSize         | integer | If zero, a default (currently 4KB) is used                                                                        |
 | idleConnTimeout        | integer | Duration in Nano Seconds                                                                                          |
+| readIdleTimeout        | integer | Duration in Nano Seconds. HTTP/2 sends a health check PING when no frame was received for this long. Zero disables it |
+| pingTimeout            | integer | Duration in Nano Seconds. Closes the HTTP/2 connection when the PING is not acknowledged in time. Zero means 15 seconds |
 
 #### CandidateCipherSuite
 

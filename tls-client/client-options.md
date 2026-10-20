@@ -46,6 +46,15 @@ When instantiating the TLS client you can define various options which are docum
         Certificates: []tls.Certificate{clientCert},
     })
     ```
+
+    For HTTP/2 health checks the struct has `ReadIdleTimeout` and `PingTimeout`. With `ReadIdleTimeout` set, the HTTP/2 transport sends a PING frame when no frame was received for that long, which keeps idle connections open on servers that close them after an idle period (Cloudflare sends `GOAWAY` after 400 seconds). `PingTimeout` closes the connection when the PING is not acknowledged in time, zero means 15 seconds. Zero for `ReadIdleTimeout` keeps the default, no health check. `IdleConnTimeout` still applies and PINGs do not reset it. Real browsers do not send these PINGs, so they are visible on the wire.
+
+    ```go
+    tls_client.WithTransportOptions(&tls_client.TransportOptions{
+        ReadIdleTimeout: 60 * time.Second,
+        PingTimeout:     15 * time.Second,
+    })
+    ```
 *   WithProxyUrl
 
     ```
@@ -132,6 +141,12 @@ When instantiating the TLS client you can define various options which are docum
     Please refer to https://github.com/tam7t/hpkp/#examples in order to see how to generate pins. The certificatePins are a map with the host as key.
     You can provide a BadPinHandlerFunc or nil as second argument. This function will be executed once a bad ssl pin is detected.
     ```
+*   WithCertificatePinner
+
+    ```
+    WithCertificatePinner supplies a custom CertificatePinner, used instead of the built-in SPKI pinner on the TLS handshake of every HTTP/1.1, HTTP/2 and WebSocket connection.
+    It takes precedence over WithCertificatePinning; the two are not combined. HTTP/3 connections are not covered, use WithDisableHttp3 if the check has to run on every connection.
+    ```
 *   WithDebug
 
     ```
@@ -167,6 +182,8 @@ When instantiating the TLS client you can define various options which are docum
     ```
     WithConnectHeaders configures a client to use the specified headers for the CONNECT request
     ```
+
+    If no `User-Agent` is specified the CONNECT request is sent with `Go-http-client/1.1` (or `Go-http-client/2.0` when the proxy negotiates HTTP/2). Set it to `nil` or to the empty string to send no `User-Agent` at all, see [Request Headers](request-headers.md#user-agent).
 *   WithProtocolRacing
 
     ```

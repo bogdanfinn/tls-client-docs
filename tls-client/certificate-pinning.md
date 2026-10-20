@@ -71,6 +71,26 @@ Just install the tool and run the following command against the site you want to
 hpkp-pins -server=bstn.com:443
 ```
 
+#### Custom pinner
+
+If a hash comparison is not enough, for example to check the subject or the SAN entries of the peer certificate, implement the `CertificatePinner` interface and pass it with `WithCertificatePinner`. It replaces the built-in pinner and takes precedence over `WithCertificatePinning`.
+
+```go
+type myPinner struct{}
+
+func (myPinner) Pin(conn *tls.UConn, host string) error {
+   // conn.ConnectionState().PeerCertificates is available here
+   return nil
+}
+
+client, err := tls_client.NewHttpClient(tls_client.NewNoopLogger(),
+   tls_client.WithClientProfile(profiles.Chrome_152),
+   tls_client.WithCertificatePinner(myPinner{}),
+)
+```
+
+Neither pinner runs on HTTP/3 connections, because those use their own QUIC TLS stack. If you enable `WithProtocolRacing()` and need the check on every connection, add `WithDisableHttp3()`.
+
 ### Example
 
 A runnable version is in [`./example/certificate_pinning`](https://github.com/bogdanfinn/tls-client/tree/master/example/certificate_pinning).
