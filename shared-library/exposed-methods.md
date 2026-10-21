@@ -58,7 +58,7 @@ Opens a WebSocket connection and returns a `connectionId` for the other methods.
 }
 ```
 
-Further optional fields: `sessionId`, `customTlsClient`, `readBufferSize`, `writeBufferSize`, `insecureSkipVerify`, `withRandomTLSExtensionOrder`. permessage-deflate is always offered in the handshake, as browsers do.
+Further optional fields: `sessionId`, `customTlsClient`, `readBufferSize`, `writeBufferSize`, `insecureSkipVerify`, `withRandomTLSExtensionOrder`, `serverNameOverwrite`, `disableIPV4`, `disableIPV6`. permessage-deflate is always offered in the handshake, as browsers do.
 
 Without `sessionId` an HTTP/1.1 client is built for the connection and nothing is added to the session store. With `sessionId` the existing session is used as it is, so it must have been created with `forceHttp1: true`, otherwise the handshake fails when the server negotiates HTTP/2.
 
