@@ -6,8 +6,10 @@
 go get -u github.com/bogdanfinn/tls-client
 
 // or specific version:
-// go get github.com/bogdanfinn/tls-client@v1.7.2
+// go get github.com/bogdanfinn/tls-client@v1.17.1
 ```
+
+Since version 1.17.0 the library requires Go 1.27 or newer.
 
 Some users have trouble when using `go get -u`. If this is the case for you please cleanup your go.mod file and do a `go get` with a specific version like described above in the commented out code.
 

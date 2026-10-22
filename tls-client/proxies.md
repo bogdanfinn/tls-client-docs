@@ -6,6 +6,10 @@ A proxy should be formatted like this: `http://username:password@host:port` or `
 
 If you are using rotating Proxies (proxies with a static URL) then make sure to always call SetProxy with the same proxy again to let the client reconnect to the Proxy Server and receive a new IP-Address.
 
+### Timeouts
+
+The proxy dial and the CONNECT request are bounded by the client timeout and by the request context, whichever ends first, and are aborted when the context is cancelled. This holds for HTTP, HTTPS, SOCKS4 and SOCKS5 proxies. A proxy that never answers therefore no longer blocks the request, or other requests of the same client, past the timeout.
+
 ### Proxies and HTTP/3
 
 HTTP/3 runs over QUIC, which is UDP. An HTTP or SOCKS4 proxy can only carry TCP, so it cannot tunnel HTTP/3 at all. Only SOCKS5 can, through UDP ASSOCIATE.

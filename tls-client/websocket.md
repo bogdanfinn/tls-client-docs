@@ -69,6 +69,12 @@ defer conn.Close()
     ```
     WithCookiejar sets the cookie jar to use for the WebSocket connection.
     ```
+*   WithEnableCompression
+
+    ```
+    WithEnableCompression offers permessage-deflate in the handshake (browsers and iOS URLSession do)
+    and transparently compresses / decompresses messages when the server accepts it.
+    ```
 
 ### Example
 

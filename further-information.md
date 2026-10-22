@@ -5,3 +5,7 @@ This library uses the following api: [https://tls.peet.ws/api/all](https://tls.p
 Show some love for peet here: [https://www.buymeacoffee.com/peeet](https://www.buymeacoffee.com/peeet)
 
 If you appreciate my work feel free to [buy me a coffee](https://www.buymeacoffee.com/CaptainBarnius) or donate some money to charity.
+
+### License
+
+Since version 1.17.0 the tls-client, and with it the shared library, is licensed under the [BSD-3-Clause license](https://github.com/bogdanfinn/tls-client/blob/master/LICENSE). Before that it was under the BSD-4-Clause license; the advertising clause, which required an acknowledgement in all advertising materials, no longer applies.

@@ -96,6 +96,8 @@ When instantiating the TLS client you can define various options which are docum
     - Use 0 to disable the deadline (unlimited) for large downloads or long-polling.
     - Default is 30000 milliseconds (30 seconds).
     ```
+
+    The deadline also bounds the proxy dial and the CONNECT request to the proxy. With `0`, connections the HTTP/2 transport redials on its own are still bounded by `DefaultTimeoutSeconds` (30 seconds), so a stalled proxy cannot hang the client.
 *   WithTimeoutSeconds
 
     ```
@@ -108,6 +110,8 @@ When instantiating the TLS client you can define various options which are docum
     - Use 0 to disable the deadline (unlimited) for large downloads or long-polling.
     - Default is 30 seconds.
     ```
+
+    The deadline also bounds the proxy dial and the CONNECT request to the proxy. With `0`, connections the HTTP/2 transport redials on its own are still bounded by `DefaultTimeoutSeconds` (30 seconds), so a stalled proxy cannot hang the client.
 *   WithTimeout
 
     ```
@@ -157,6 +161,8 @@ When instantiating the TLS client you can define various options which are docum
     ```
     WithLocalAddr configures an HTTP client to use the specified local address.
     ```
+
+    Since version 1.17.1 this also applies to the connection to an HTTPS proxy.
 *   WithDisableIPV4
 
     ```
@@ -184,6 +190,8 @@ When instantiating the TLS client you can define various options which are docum
     ```
 
     If no `User-Agent` is specified the CONNECT request is sent with `Go-http-client/1.1` (or `Go-http-client/2.0` when the proxy negotiates HTTP/2). Set it to `nil` or to the empty string to send no `User-Agent` at all, see [Request Headers](request-headers.md#user-agent).
+
+    The headers go out in the order given under `http.HeaderOrderKey`, whether the names are lower-case or capitalised, and alphabetically when no order is given. Chrome sends `Host`, `Proxy-Connection: keep-alive` and `User-Agent`, in that order.
 *   WithProtocolRacing
 
     ```
@@ -208,6 +216,8 @@ When instantiating the TLS client you can define various options which are docum
     ```
     WithDialer configures an HTTP client to use the specified dialer. This allows the use of a custom DNS resolver.
     ```
+
+    Since version 1.17.1 this also applies to the connection to an HTTPS proxy.
 *   WithProxyDialerFactory
 
     ```

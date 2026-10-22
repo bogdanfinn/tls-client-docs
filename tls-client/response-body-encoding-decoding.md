@@ -2,7 +2,7 @@
 
 If you are specifying `accept-encoding` header yourself and you are on a `http1` connection than you have to take care of the response body decompression yourself. It is not done automatically.&#x20;
 
-Only if you are **not** adding `accept-encoding` header then the library adds it for you if not explicit disabled and also handles the decompression automatically.
+Only if you are **not** adding `accept-encoding` header then the library adds it for you if not explicit disabled and also handles the decompression automatically. Since version 1.17.0 the added header is `gzip, deflate, br, zstd` (before: `gzip, deflate, br`).
 
 On `http2` the automatic decompression should always be in place according to the `content-type` Header on the Response.
 
