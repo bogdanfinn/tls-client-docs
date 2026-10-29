@@ -55,6 +55,14 @@ When instantiating the TLS client you can define various options which are docum
         PingTimeout:     15 * time.Second,
     })
     ```
+
+    `ResponseHeaderTimeout` limits the time to wait for the response headers after the request, including its body, has been written, over HTTP/1.1 and HTTP/2. Unlike the client timeout it does not cover reading the body, so long downloads are not cut off. Zero means no timeout.
+
+    ```go
+    tls_client.WithTransportOptions(&tls_client.TransportOptions{
+        ResponseHeaderTimeout: 10 * time.Second,
+    })
+    ```
 *   WithProxyUrl
 
     ```

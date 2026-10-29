@@ -1,12 +1,12 @@
 # Response Body Encoding / Decoding
 
-If you are specifying `accept-encoding` header yourself and you are on a `http1` connection than you have to take care of the response body decompression yourself. It is not done automatically.&#x20;
+If you do **not** set an `accept-encoding` header, the library adds one for you unless compression is disabled. Since version 1.17.0 the added header is `gzip, deflate, br, zstd` (before: `gzip, deflate, br`).
 
-Only if you are **not** adding `accept-encoding` header then the library adds it for you if not explicit disabled and also handles the decompression automatically. Since version 1.17.0 the added header is `gzip, deflate, br, zstd` (before: `gzip, deflate, br`).
+On `http1` and `http2` the response body is decompressed automatically according to the `Content-Encoding` header of the response, whether you set `accept-encoding` yourself or not. Supported are `gzip`, `deflate`, `br` and `zstd`. The decoded response no longer carries `Content-Encoding` and `Content-Length`. Before version 1.18.0, `http1` only decompressed when the library added the header itself or your `accept-encoding` contained `gzip`.
 
-On `http2` the automatic decompression should always be in place according to the `content-type` Header on the Response.
+On `http3` the body is only decompressed when the library added the header itself, and then only `gzip`.
 
-`DecompressBody` is an exported function you can use. See the following example on how do decompress the response body manually
+`DecompressBody` is an exported function you can use when the automatic decompression is disabled (see below). On a response that was already decoded it returns the body unchanged, so calling it does no harm. See the following example on how do decompress the response body manually
 
 ```go
 req, err := http.NewRequest(http.MethodGet, "https://tls.browserleaks.com/json", nil)
@@ -47,7 +47,7 @@ if err != nil {
 log.Println(string(all))
 ```
 
-It is possible to disable the automatic decompression on http2 by adding the following option to the http client
+It is possible to disable the automatic decompression on http1, http2 and http3 by adding the following option to the http client
 
 ```go
 	tls_client.WithTransportOptions(&tls_client.TransportOptions{

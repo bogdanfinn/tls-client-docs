@@ -136,6 +136,7 @@ The anchor IDs are put in a fresh order once per client, because Chromium writes
   "idleConnTimeout": 0,
   "readIdleTimeout": 0,
   "pingTimeout": 0,
+  "responseHeaderTimeout": 0,
 }
 ```
 
@@ -152,6 +153,7 @@ The anchor IDs are put in a fresh order once per client, because Chromium writes
 | idleConnTimeout        | integer | Duration in Nano Seconds                                                                                          |
 | readIdleTimeout        | integer | Duration in Nano Seconds. HTTP/2 sends a health check PING when no frame was received for this long. Zero disables it |
 | pingTimeout            | integer | Duration in Nano Seconds. Closes the HTTP/2 connection when the PING is not acknowledged in time. Zero means 15 seconds |
+| responseHeaderTimeout  | integer | Duration in Nano Seconds. Time to wait for the response headers after the request has been written, over HTTP/1.1 and HTTP/2. Zero means no timeout |
 
 #### CandidateCipherSuite
 

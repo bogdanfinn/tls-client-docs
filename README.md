@@ -28,6 +28,7 @@ type HttpClient interface {
     SetFollowRedirect(followRedirect bool)
     GetFollowRedirect() bool
     CloseIdleConnections()
+    Close()
     Do(req *http.Request) (*http.Response, error)
     Get(url string) (resp *http.Response, err error)
     Head(url string) (resp *http.Response, err error)
@@ -40,3 +41,5 @@ type HttpClient interface {
 ```
 
 The methods should be more or less self explanatory.
+
+Call `Close()` when you no longer need a client. Unlike `CloseIdleConnections()` it also releases the UDP sockets of HTTP/3 transports, which otherwise stay open for the lifetime of the process. The client remains usable afterwards and builds new transports on the next request.

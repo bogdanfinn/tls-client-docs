@@ -33,6 +33,10 @@ Sometimes people are confused when to write header keys all lowercase and when t
 
 `"Accept-Encoding"` => HTTP1
 
+### Content-Length and Transfer-Encoding
+
+`Content-Length`, `Transfer-Encoding` and `Trailer` are computed from the request on HTTP/1.1. Since version 1.18.0 they are written under the spelling you used, so a request with all lower-case headers also sends `content-length` in lower case. If you set none of them, or use more than one spelling, the canonical name is used.
+
 ### User-Agent
 
 If you do not set a `User-Agent` header, a default one is sent: `Go-http-client/1.1` for HTTP/1.1, `Go-http-client/2.0` for HTTP/2 and `quic-go HTTP/3` for HTTP/3.
