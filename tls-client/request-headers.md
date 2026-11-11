@@ -33,6 +33,10 @@ Sometimes people are confused when to write header keys all lowercase and when t
 
 `"Accept-Encoding"` => HTTP1
 
+### Query Encoding
+
+Since version 1.18.1 bytes that are not allowed unencoded in a URL query, for example a space, control characters or non-ASCII characters, are percent-encoded before the request is sent, as browsers do. Go's `url.Parse` keeps them as they are, which broke the HTTP/1.1 request line. `%` is left alone, so already encoded queries are not encoded twice, and `+` is kept as well. This applies to HTTP/1.1, HTTP/2 and HTTP/3.
+
 ### Content-Length and Transfer-Encoding
 
 `Content-Length`, `Transfer-Encoding` and `Trailer` are computed from the request on HTTP/1.1. Since version 1.18.0 they are written under the spelling you used, so a request with all lower-case headers also sends `content-length` in lower case. If you set none of them, or use more than one spelling, the canonical name is used.

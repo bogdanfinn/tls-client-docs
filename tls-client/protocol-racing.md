@@ -63,7 +63,7 @@ When using the shared library or standalone API, set `"withProtocolRacing": true
 
 ### Known Issues
 
-Two limitations apply to protocol racing as of version 1.17.1. Both only affect clients that actually use HTTP/3, so a client without protocol racing is unaffected.
+Two limitations apply to protocol racing as of version 1.18.1. Both only affect clients that actually use HTTP/3, so a client without protocol racing is unaffected.
 
 #### Most profiles have no HTTP/3 fingerprint
 
@@ -73,6 +73,7 @@ Only five of the shipped profiles carry HTTP/3 settings: `chrome_144`, `chrome_1
 chrome_144   1:65536;6:262144;7:100;51:1;GREASE|GREASE|984832|m,a,s,p
 chrome_150   6:262144;51:1|m,a,s,p
 chrome_152   6:262144;51:1|m,a,s,p
+chrome_154   6:262144;51:1|m,a,s,p
 firefox_147  1:65536;7:20;727725890:0;16765559:1;51:1;8:1|GREASE|m,s,a,p
 ```
 

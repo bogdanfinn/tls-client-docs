@@ -100,9 +100,9 @@ Chromium sends the trust_anchors extension from Chrome 144 on. A ja3 string name
 
 Take the value from the `data` field of the `Unknown extension 51764` entry in a browser fingerprint; it already starts at the 16-bit list length. `"0000"` is an empty anchor list.
 
-Of the shipped profiles, `chrome_146` and `chrome_146_PSK` send that empty list, while `chrome_152` and `chrome_152_PSK` send the anchor IDs of the Chrome Root Store, generated into the `trust_anchors` package by `go generate ./trust_anchors`. The other profiles do not send the extension at all.
+Of the shipped profiles, `chrome_146` and `chrome_146_PSK` send that empty list, while `chrome_150`, `chrome_150_PSK`, `chrome_152`, `chrome_152_PSK`, `chrome_154` and `chrome_154_PSK` send the anchor IDs of the Chrome Root Store, generated into the `trust_anchors` package by `go generate ./trust_anchors`. The other profiles do not send the extension at all. `chrome_150` and `chrome_150_PSK` send it since version 1.18.1.
 
-The IDs are reordered once per spec factory, because Chromium writes them in hash set iteration order, which holds for the life of a browser process and differs between processes. A capture whose IDs are already sorted keeps its order. `trust_anchors.BuildPayload` does that on its own if you build the extension by hand; `profiles.BuildTrustAnchorsPayload` is deprecated and calls it.
+Up to Chrome 153 the IDs are reordered once per spec factory, because Chromium writes them in hash set iteration order, which holds for the life of a browser process and differs between processes (`trust_anchors.ChromeShuffled()`). Chrome 154 and later sort the IDs, so every process sends the same bytes; `chrome_154` and `chrome_154_PSK` use `trust_anchors.ChromeSorted()`. A capture whose IDs are already sorted keeps its order. `trust_anchors.BuildPayload` does that on its own if you build the extension by hand; `profiles.BuildTrustAnchorsPayload` is deprecated and calls it.
 
 At the end you can just build the complete custom profile by providing all the above mentioned information.
 

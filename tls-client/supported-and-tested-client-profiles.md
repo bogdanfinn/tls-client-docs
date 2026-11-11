@@ -30,6 +30,8 @@ The internal client profiles were created and tested by myself. Of course that d
    * 150 with PSK (chrome\_150\_PSK)
    * 152 (chrome\_152)
    * 152 with PSK (chrome\_152\_PSK)
+   * 154 (chrome\_154)
+   * 154 with PSK (chrome\_154\_PSK)
 2. Brave
    * 146 (brave\_146)
    * 146 with PSK (brave\_146\_PSK)
@@ -101,6 +103,8 @@ The contributed client profiles are contributed by people from the community. Th
    * 147 (firefox\_147)
    * 147 with PSK (firefox\_147\_PSK)
    * 148 (firefox\_148)
+5. Safari
+   * 27.2 (safari\_27\_2)
 
 You can also provide your own client. See the examples how to do that.
 
